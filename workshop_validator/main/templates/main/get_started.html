@@ -12,9 +12,18 @@
   </head>
   <body>
     <div class="container">
+        <center>
+            <h1><strong>시작하기</strong></h1>
+            <p>우선 참가에 앞서, 필요한 정보를 입력해 주세요.</p>
+            <p>여기서 잘못 입력하면, 각 단계에서 검증에 실패하기 때문에 원활하게 진행이 안될 수 있습니다.</p>
+        </center>
         <div class="d-flex justify-content-center">
-            <form action="{% url 'q1' %}" method="POST">
+            <form action="{% url 'main' %}" method="POST">
                 {% csrf_token %}
+                <div class="mb-3" style="width:400px;">
+                    <label for="githubid" class="form-label text-left">GitHub Username</label>
+                    <input class="form-control" type="text" placeholder="GitHub Username 을 입력하세요." name="username" required>
+                </div>
                 <button type="submit" class="btn btn-primary">제출</button>
             </form>
         </div>
