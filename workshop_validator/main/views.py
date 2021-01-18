@@ -145,10 +145,26 @@ def question_seven(request):
         pass
 
 
-def validate(question) -> bool:
-    # Session validation method.
-    return False
+def validate(request, question, username) -> None:
+    user = Member.objects.get(username=username)
+    userinfo = request.session.get('userinfo')
 
+    if question == "q1":
+        user.q1 = True
+    elif question == "q2":
+        user.q2 = True
+    elif question == "q3":
+        user.q3 = True
+    elif question == "q4":
+        user.q4 = True
+    elif question == "q5":
+        user.q5 = True
+    elif question == "q6":
+        user.q6 = True
+    elif question == "q7":
+        user.q7 = True
 
-def verify(request, question) -> None:
-    pass
+    user.save()
+    userinfo[question] = True
+    request.session['userinfo'] = userinfo
+    print("Validation complete at {0} for {1}".format(question, userinfo['username']))
