@@ -84,15 +84,11 @@ def question_one(request):
             if result:
                 print("Q1 passed. Congrats, {0}".format(username))
                 return HttpResponseRedirect('/git_workshop/question2/')
-            else:
-                print("Q1 Failed. Try Again, {0}".format(username))
-                messages.info(request, '검증 실패! 다시 시도해 보세요.')
-                return render(request, 'main/question1.html')
-        else:
-            # Fail
-            print("Q1 Failed. Try Again, {0}".format(username))
-            messages.info(request, '검증 실패! 다시 시도해 보세요.')
-            return render(request, 'main/question1.html')
+
+        # Fail
+        print("Q1 Failed. Try Again, {0}".format(username))
+        messages.info(request, '검증 실패! 다시 시도해 보세요.')
+        return render(request, 'main/question1.html')
 
 
 def question_two(request):
