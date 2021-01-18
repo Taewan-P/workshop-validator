@@ -212,6 +212,14 @@ def question_four(request):
 
 
 def question_five(request):
+    """
+    Fifth Question.
+    Create a PR named `My First Pull Request` from feature to main branch
+
+    *Will Check For...*
+    - Latest Pull Request named string given above
+    - Making a Pull Request from feature to main branch
+    """
     userinfo = request.session.get('userinfo')
     if not userinfo:
         return HttpResponseRedirect('/forbidden/')
@@ -222,7 +230,30 @@ def question_five(request):
     if request.method == "GET":
         return render(request, 'main/question5.html')
     elif request.method == "POST":
-        pass
+        username = userinfo['username']
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls".format(username)
+        response = requests.get(url)
+        status_code = response.status_code
+        if status_code == 200:
+            pr_list = json.loads(response.text)
+            if pr_list:
+                if type(pr_list) is list:
+                    pr_json = pr_list[0]
+                    feature_branch = pr_json.get("head").get("label")
+                    main_branch = pr_json.get("base").get("label")
+                    title = pr_json.get("title")
+                    if feature_branch == "{0}:feature".format(username) and main_branch == "{0}:main".format(username):
+                        if title == "My First Pull Request":
+                            # Success
+                            result = validate(request, "q5", username)
+                            if result:
+                                print("Q5 passed. Congrats, {0}".format(username))
+                                return HttpResponseRedirect('/git_workshop/question6/')
+
+        # Fail
+        print("Q5 Failed. Try Again, {0}".format(username))
+        messages.info(request, '검증 실패! 다시 시도해 보세요.')
+        return render(request, 'main/question5.html')
 
 
 def question_six(request):
