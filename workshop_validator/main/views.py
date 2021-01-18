@@ -1,4 +1,4 @@
-import requests
+import requests, json
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -9,7 +9,7 @@ from .models import Member
 
 
 # Create your views here.
-def forbidden(request, exception):
+def forbidden(request, *args, **argv):
     res = render(request, "main/403.html")
     res.status_code = 403
     return res
@@ -75,7 +75,7 @@ def question_one(request):
     elif request.method == "POST":
         # Verification
         username = userinfo['username']
-        url = "https://api.github.com/repos/{0}/workshop-validator".format(username)
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021".format(username)
         response = requests.get(url)
         print(response.status_code)
         if response.status_code == 200:
