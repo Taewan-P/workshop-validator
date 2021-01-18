@@ -9,13 +9,13 @@ from .models import Member
 
 
 # Create your views here.
-def forbidden(request):
+def forbidden(request, exception):
     res = render(request, "main/403.html")
     res.status_code = 403
     return res
 
 
-def not_found(request):
+def not_found(request, exception):
     res = render(request, "main/404.html")
     res.status_code = 404
     return res
