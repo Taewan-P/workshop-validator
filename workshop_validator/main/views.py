@@ -193,7 +193,7 @@ def verify_session(userinfo, question) -> bool:
         if q == question:
             return True
 
-        if userinfo[question]:
+        if userinfo[q]:
             continue
         else:
             return False
