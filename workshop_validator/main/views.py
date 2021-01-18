@@ -131,6 +131,10 @@ def question_two(request):
 
 
 def question_three(request):
+    """
+    Third Question
+    Create a branch named `feature`. Publish it.
+    """
     userinfo = request.session.get('userinfo')
     if not userinfo:
         return HttpResponseRedirect('/forbidden/')
@@ -141,7 +145,22 @@ def question_three(request):
     if request.method == "GET":
         return render(request, 'main/question3.html')
     elif request.method == "POST":
-        pass
+        # Verification
+        username = userinfo['username']
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/branches/feature".format(username)
+        response = requests.get(url)
+        status_code = response.status_code
+        if status_code == 200:
+            # Success
+            result = validate(request, "q3", username)
+            if result:
+                print("Q3 passed. Congrats, {0}".format(username))
+                return HttpResponseRedirect('/git_workshop/question4/')
+
+        # Fail
+        print("Q3 Failed. Try Again, {0}".format(username))
+        messages.info(request, '검증 실패! 다시 시도해 보세요.')
+        return render(request, 'main/question3.html')
 
 
 def question_four(request):
