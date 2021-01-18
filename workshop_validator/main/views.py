@@ -69,9 +69,14 @@ def question_one(request):
         print(response.status_code)
         if response.status_code == 200:
             # Validate that this user have solved the question
-            validate(request, "q1", username)
-            print("Q1 passed. Congrats, {0}".format(username))
-            return HttpResponseRedirect('git_workshop/question2')
+            result = validate(request, "q1", username)
+            if result:
+                print("Q1 passed. Congrats, {0}".format(username))
+                return HttpResponseRedirect('git_workshop/question2')
+            else:
+                print("Q1 Failed. Try Again, {0}".format(username))
+                messages.info(request, '검증 실패! 다시 시도해 보세요.')
+                return render(request, 'main/question1.html')
         else:
             # Fail
             print("Q1 Failed. Try Again, {0}".format(username))
@@ -154,9 +159,12 @@ def question_seven(request):
         pass
 
 
-def validate(request, question, username) -> None:
+def validate(request, question, username) -> bool:
     user = Member.objects.get(username=username)
     userinfo = request.session.get('userinfo')
+
+    if not (verify_session(userinfo, question) and verify_database(userinfo)):
+        return False
 
     if question == "q1":
         user.q1 = True
@@ -177,6 +185,7 @@ def validate(request, question, username) -> None:
     userinfo[question] = True
     request.session['userinfo'] = userinfo
     print("Validation complete at {0} for {1}".format(question, userinfo['username']))
+    return True
 
 
 def verify_session(userinfo, question) -> bool:
