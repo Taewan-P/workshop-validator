@@ -9,6 +9,17 @@ from .models import Member
 
 
 # Create your views here.
+def forbidden(request):
+    res = render(request, "main/403.html")
+    res.status_code = 403
+    return res
+
+
+def not_found(request):
+    res = render(request, "main/404.html")
+    res.status_code = 404
+    return res
+
 
 def index(request):
     return render(request, 'main/index.html')
@@ -28,7 +39,7 @@ def main_page(request):
                 new_member = Member(username=username)
                 new_member.save()
                 request.session['userinfo'] = model_to_dict(new_member)
-                return HttpResponseRedirect('git_workshop/question1')
+                return HttpResponseRedirect('question1/')
 
             # Already registered. -> Redirect to unsolved question
             values = model_to_dict(mem_lookup)
@@ -38,7 +49,7 @@ def main_page(request):
                 if not values.get(q):
                     # The question user has to solve
                     print("Going to {0}".format(q))
-                    return HttpResponseRedirect('git_workshop/{0}uestion{1}'.format(q[0], q[1]))
+                    return HttpResponseRedirect('{0}uestion{1}/'.format(q[0], q[1]))
 
             # Solved all questions
             print(values)
@@ -46,7 +57,7 @@ def main_page(request):
         else:
             # 404
             print("INVALID USERNAME")
-            return render(request, 'main/404.html')
+            return HttpResponseRedirect('/404-not-found/')
 
 
 def question_one(request):
@@ -57,7 +68,7 @@ def question_one(request):
     """
     userinfo = request.session.get('userinfo')
     if not userinfo:  # Check for forbidden access
-        return render(request, 'main/403.html')
+        return HttpResponseRedirect('/forbidden/')
 
     if request.method == "GET":
         return render(request, 'main/question1.html')
@@ -72,7 +83,7 @@ def question_one(request):
             result = validate(request, "q1", username)
             if result:
                 print("Q1 passed. Congrats, {0}".format(username))
-                return HttpResponseRedirect('git_workshop/question2')
+                return HttpResponseRedirect('/git_workshop/question2/')
             else:
                 print("Q1 Failed. Try Again, {0}".format(username))
                 messages.info(request, '검증 실패! 다시 시도해 보세요.')
@@ -85,13 +96,17 @@ def question_one(request):
 
 
 def question_two(request):
+    """
+    Second Question.
+    Add a file named `README.md` and write anything in it.
+    Then. commit this file with commit message `Add README.md` and push to `main` branch repository.
+    """
     userinfo = request.session.get('userinfo')
-    print(userinfo)
     if not userinfo:
-        return render(request, 'main/403.html')
+        return HttpResponseRedirect('/forbidden/')
 
-    if not userinfo["q1"]:
-        return render(request, 'main/403.html')
+    if not (verify_session(userinfo, "q2") and verify_database(userinfo)):
+        return HttpResponseRedirect('/forbidden/')
 
     if request.method == "GET":
         return render(request, 'main/question2.html')
@@ -101,9 +116,11 @@ def question_two(request):
 
 def question_three(request):
     userinfo = request.session.get('userinfo')
-    print(userinfo)
     if not userinfo:
-        return render(request, 'main/403.html')
+        return HttpResponseRedirect('/forbidden/')
+
+    if not (verify_session(userinfo, "q3") and verify_database(userinfo)):
+        return HttpResponseRedirect('/forbidden/')
 
     if request.method == "GET":
         return render(request, 'main/question3.html')
@@ -113,9 +130,11 @@ def question_three(request):
 
 def question_four(request):
     userinfo = request.session.get('userinfo')
-    print(userinfo)
     if not userinfo:
-        return render(request, 'main/403.html')
+        return HttpResponseRedirect('/forbidden/')
+
+    if not (verify_session(userinfo, "q4") and verify_database(userinfo)):
+        return HttpResponseRedirect('/forbidden/')
 
     if request.method == "GET":
         return render(request, 'main/question4.html')
@@ -125,9 +144,11 @@ def question_four(request):
 
 def question_five(request):
     userinfo = request.session.get('userinfo')
-    print(userinfo)
     if not userinfo:
-        return render(request, 'main/403.html')
+        return HttpResponseRedirect('/forbidden/')
+
+    if not (verify_session(userinfo, "q5") and verify_database(userinfo)):
+        return HttpResponseRedirect('/forbidden/')
 
     if request.method == "GET":
         return render(request, 'main/question5.html')
@@ -137,9 +158,11 @@ def question_five(request):
 
 def question_six(request):
     userinfo = request.session.get('userinfo')
-    print(userinfo)
     if not userinfo:
-        return render(request, 'main/403.html')
+        return HttpResponseRedirect('/forbidden/')
+
+    if not (verify_session(userinfo, "q6") and verify_database(userinfo)):
+        return HttpResponseRedirect('/forbidden/')
 
     if request.method == "GET":
         return render(request, 'main/question6.html')
@@ -149,9 +172,11 @@ def question_six(request):
 
 def question_seven(request):
     userinfo = request.session.get('userinfo')
-    print(userinfo)
     if not userinfo:
-        return render(request, 'main/403.html')
+        return HttpResponseRedirect('/forbidden/')
+
+    if not (verify_session(userinfo, "q7") and verify_database(userinfo)):
+        return HttpResponseRedirect('/forbidden/')
 
     if request.method == "GET":
         return render(request, 'main/question7.html')
