@@ -188,7 +188,27 @@ def question_four(request):
     if request.method == "GET":
         return render(request, 'main/question4.html')
     elif request.method == "POST":
-        pass
+        # Verification
+        username = userinfo['username']
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/branches/feature".format(username)
+        response = requests.get(url)
+        status_code = response.status_code
+        response_text = json.loads(response.text)
+        if status_code == 200:
+            commit = response_text.get("commit")
+            if commit:
+                msg = commit.get("commit").get("message")
+                if msg == "Update README.md for Question 4":
+                    # Success
+                    result = validate(request, "q4", username)
+                    if result:
+                        print("Q4 passed. Congrats, {0}".format(username))
+                        return HttpResponseRedirect('/git_workshop/question5/')
+
+        # Fail
+        print("Q4 Failed. Try Again, {0}".format(username))
+        messages.info(request, '검증 실패! 다시 시도해 보세요.')
+        return render(request, 'main/question4.html')
 
 
 def question_five(request):
