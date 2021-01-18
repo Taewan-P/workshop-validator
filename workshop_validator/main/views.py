@@ -257,6 +257,13 @@ def question_five(request):
 
 
 def question_six(request):
+    """
+    Sixth Question.
+    Merge your Pull Request. However, set merge commit message name to `Merge "My First Pull Request" into main`.
+    *Will Check For...*
+    - Latest commit message should be `Merge "My First Pull Request" into main`.
+    - Should include commit `Update README.md for Question 4` in main branch with the merged commit.
+    """
     userinfo = request.session.get('userinfo')
     if not userinfo:
         return HttpResponseRedirect('/forbidden/')
