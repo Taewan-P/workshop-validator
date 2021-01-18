@@ -177,3 +177,20 @@ def validate(request, question, username) -> None:
     userinfo[question] = True
     request.session['userinfo'] = userinfo
     print("Validation complete at {0} for {1}".format(question, userinfo['username']))
+
+
+def verify_session(userinfo, question) -> bool:
+    for q in ["q1", "q2", "q3", "q4", "q5", "q6", "q7"]:
+        if q == question:
+            return True
+
+        if userinfo[question]:
+            continue
+        else:
+            return False
+
+
+def verify_database(userinfo) -> bool:
+    user = Member.objects.get(username=userinfo["username"])
+    value = model_to_dict(user)
+    return value == userinfo
