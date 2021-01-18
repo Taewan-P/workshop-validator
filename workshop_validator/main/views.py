@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.forms.models import model_to_dict
+from django.contrib import messages
 
 from .models import Member
 
@@ -74,6 +75,8 @@ def question_one(request):
         else:
             # Fail
             print("Q1 Failed. Try Again, {0}".format(username))
+            messages.info(request, '검증 실패! 다시 시도해 보세요.')
+            return render(request, 'main/question1.html')
 
 
 def question_two(request):

@@ -18,6 +18,11 @@
                 <button type="submit" class="btn btn-primary">제출</button>
             </form>
         </div>
+        {% if messages %}
+            {% for message in messages %}
+                {{ message.message }}
+            {% endfor %}
+        {% endif %}
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
