@@ -96,6 +96,10 @@ def question_two(request):
     Second Question.
     Add a file named `README.md` and write anything in it.
     Then. commit this file with commit message `Add README.md` and push to `main` branch repository.
+
+    *Will Check For...*
+    - Whether main branch exists
+    - Last commit message of main branch should be equal to the provided text in the problem
     """
     userinfo = request.session.get('userinfo')
     if not userinfo:
@@ -134,6 +138,9 @@ def question_three(request):
     """
     Third Question
     Create a branch named `feature`. Publish it.
+
+    *Will Check For...*
+    - Whether feature branch exists in the repository.
     """
     userinfo = request.session.get('userinfo')
     if not userinfo:
@@ -164,6 +171,13 @@ def question_three(request):
 
 
 def question_four(request):
+    """
+    Fourth Question.
+    Edit README.md in feature branch. Commit and push changes with commit message `Update README.md for Question 4`.
+
+    *Will Check For...*
+    - The latest commit message of feature branch should be the provided text in question 4.
+    """
     userinfo = request.session.get('userinfo')
     if not userinfo:
         return HttpResponseRedirect('/forbidden/')
