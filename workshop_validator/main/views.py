@@ -52,10 +52,9 @@ def question_one(request):
     """
     First Question.
     Create a public repository named `jaram-workshop-2021`.
-    Verify!
+    Verify! - Will only check for public repository named `jaram-workshop-2021` with provided GitHub username.
     """
     userinfo = request.session.get('userinfo')
-    print(userinfo)
     if not userinfo:  # Check for forbidden access
         return render(request, 'main/403.html')
 
@@ -64,10 +63,17 @@ def question_one(request):
     elif request.method == "POST":
         # Verification
         username = userinfo['username']
-        URL = "https://api.github.com/repos/{0}/html-scrapper".format(username)
-        response = requests.get(URL)
+        url = "https://api.github.com/repos/{0}/workshop-validator".format(username)
+        response = requests.get(url)
         print(response.status_code)
-        print(response.text)
+        if response.status_code == 200:
+            # Validate that this user have solved the question
+            validate(request, "q1", username)
+            print("Q1 passed. Congrats, {0}".format(username))
+            return HttpResponseRedirect('git_workshop/question2')
+        else:
+            # Fail
+            print("Q1 Failed. Try Again, {0}".format(username))
 
 
 def question_two(request):
