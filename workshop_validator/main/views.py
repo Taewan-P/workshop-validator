@@ -306,9 +306,9 @@ def question_six(request):
                                                 c = commit.get("commit").get("message")
                                                 if commit:
                                                     msg = commit.get("commit").get("message")
-                                                    if msg == "Merge \"My First Pull Request\" into main":
+                                                    if "Merge \"My First Pull Request\" into main" in msg:
                                                         bool_a = True
-                                                    elif msg == "Update README.md for Question 4":
+                                                    elif "Update README.md for Question 4" in msg:
                                                         bool_b = True
 
                                             if bool_a and bool_b:
