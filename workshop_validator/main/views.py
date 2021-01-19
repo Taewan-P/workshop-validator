@@ -416,8 +416,18 @@ def verify_database(userinfo) -> bool:
 
 def finished(request):
     userinfo = request.session.get('userinfo')
+    if not userinfo:
+        return HttpResponseRedirect('/forbidden/')
+
+    if not verify_database(userinfo):
+        return HttpResponseRedirect('/forbidden/')
+
+    for q in ["q1", "q2", "q3", "q4", "q5", "q6", "q7"]:
+        if not userinfo[q]:
+            # Fake Session
+            return HttpResponseRedirect('/forbidden/')
+
     username = userinfo['username']
     now = timezone.localtime()
     datestr = now.strftime("%Y-%m-%d  %H:%M")
-    print(datestr)
     return render(request, 'main/finished.html', {'username': username, 'timestamp': datestr})
