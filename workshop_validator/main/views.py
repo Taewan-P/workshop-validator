@@ -7,6 +7,8 @@ from django.contrib import messages
 
 from .models import Member
 
+sha = ""
+
 
 # Create your views here.
 def forbidden(request, *args, **argv):
@@ -123,6 +125,8 @@ def question_two(request):
                 msg = commit.get("commit").get("message")
                 if msg == "Add README.md":
                     # Success
+                    global sha
+                    sha = commit.get("sha")
                     result = validate(request, "q2", username)
                     if result:
                         print("Q2 passed. Congrats, {0}".format(username))
@@ -321,6 +325,13 @@ def question_six(request):
 
 
 def question_seven(request):
+    """
+    Seventh Question.
+    Do a hard reset to your repository. Revert all commits after the Pull Request you've made.
+
+    *Will Check For...*
+    - The latest commit should be: `Add README.md`, and the sha value should match. (SHA excluded for now...)
+    """
     userinfo = request.session.get('userinfo')
     if not userinfo:
         return HttpResponseRedirect('/forbidden/')
@@ -331,7 +342,30 @@ def question_seven(request):
     if request.method == "GET":
         return render(request, 'main/question7.html')
     elif request.method == "POST":
-        pass
+        # Verification
+        username = userinfo['username']
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/branches/main".format(username)
+        response = requests.get(url)
+        status_code = response.status_code
+        response_text = json.loads(response.text)
+        if status_code == 200:
+            commit = response_text.get("commit")
+            if commit:
+                msg = commit.get("commit").get("message")
+                # sha_after = commit.get("sha")
+                if msg == "Add README.md":
+                    # global sha
+                    # if sha == sha_after:
+                    # Success
+                    result = validate(request, "q7", username)
+                    if result:
+                        print("Q7 passed. Congrats, {0}".format(username))
+                        return HttpResponseRedirect('/git_workshop/finished/')
+
+        # Fail
+        print("Q7 Failed. Try Again, {0}".format(username))
+        messages.info(request, '검증 실패! 다시 시도해 보세요.')
+        return render(request, 'main/question7.html')
 
 
 def validate(request, question, username) -> bool:
