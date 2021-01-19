@@ -217,7 +217,7 @@ def question_five(request):
     Create a PR named `My First Pull Request` from feature to main branch
 
     *Will Check For...*
-    - Latest Pull Request named string given above
+    - Pull Request named string given above exists
     - Making a Pull Request from feature to main branch
     """
     userinfo = request.session.get('userinfo')
@@ -238,17 +238,18 @@ def question_five(request):
             pr_list = json.loads(response.text)
             if pr_list:
                 if type(pr_list) is list:
-                    pr_json = pr_list[0]
-                    feature_branch = pr_json.get("head").get("label")
-                    main_branch = pr_json.get("base").get("label")
-                    title = pr_json.get("title")
-                    if feature_branch == "{0}:feature".format(username) and main_branch == "{0}:main".format(username):
-                        if title == "My First Pull Request":
-                            # Success
-                            result = validate(request, "q5", username)
-                            if result:
-                                print("Q5 passed. Congrats, {0}".format(username))
-                                return HttpResponseRedirect('/git_workshop/question6/')
+                    for pr_json in pr_list:
+                        feature_branch = pr_json.get("head").get("label")
+                        main_branch = pr_json.get("base").get("label")
+                        title = pr_json.get("title")
+                        if feature_branch == "{0}:feature".format(username) and main_branch == "{0}:main".format(
+                                username):
+                            if title == "My First Pull Request":
+                                # Success
+                                result = validate(request, "q5", username)
+                                if result:
+                                    print("Q5 passed. Congrats, {0}".format(username))
+                                    return HttpResponseRedirect('/git_workshop/question6/')
 
         # Fail
         print("Q5 Failed. Try Again, {0}".format(username))
