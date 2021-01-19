@@ -13,6 +13,7 @@ urlpatterns = [
     path('git_workshop/question5/', views.question_five, name="q5"),
     path('git_workshop/question6/', views.question_six, name="q6"),
     path('git_workshop/question7/', views.question_seven, name="q7"),
+    path('git_workshop/finished/', views.finished, name="fin"),
     path('forbidden/', views.forbidden, name="403"),
     path('404-not-found/', views.not_found, name="404")
 ]

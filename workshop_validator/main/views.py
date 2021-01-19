@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.forms.models import model_to_dict
 from django.contrib import messages
+from django.utils import timezone
 
 from .models import Member
 
@@ -54,8 +55,7 @@ def main_page(request):
                     return HttpResponseRedirect('{0}uestion{1}/'.format(q[0], q[1]))
 
             # Solved all questions
-            print(values)
-            return render(request, 'main/finished.html', values)
+            return HttpResponseRedirect('/git_workshop/finished/')
         else:
             # 404
             print("INVALID USERNAME")
@@ -412,3 +412,12 @@ def verify_database(userinfo) -> bool:
     user = Member.objects.get(username=userinfo["username"])
     value = model_to_dict(user)
     return value == userinfo
+
+
+def finished(request):
+    userinfo = request.session.get('userinfo')
+    username = userinfo['username']
+    now = timezone.localtime()
+    datestr = now.strftime("%Y-%m-%d  %H:%M")
+    print(datestr)
+    return render(request, 'main/finished.html', {'username': username, 'timestamp': datestr})
