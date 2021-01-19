@@ -276,7 +276,48 @@ def question_six(request):
     if request.method == "GET":
         return render(request, 'main/question6.html')
     elif request.method == "POST":
-        pass
+        username = userinfo['username']
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls?state=closed".format(username)
+        response = requests.get(url)
+        status_code = response.status_code
+        if status_code == 200:
+            pr_list = json.loads(response.text)
+            if pr_list:
+                if type(pr_list) is list:
+                    for pr_json in pr_list:
+                        title = pr_json.get("title")
+                        if title == "My First Pull Request":
+                            merged = pr_json.get("merged_at") is not None
+                            if merged:
+                                url = "https://api.github.com/repos/{0}/jaram-workshop-2021/commits".format(username)
+                                response = requests.get(url)
+                                status_code = response.status_code
+                                if status_code == 200:
+                                    commit_list = json.loads(response.text)
+                                    if commit_list:
+                                        if type(commit_list) is list:
+                                            bool_a = False
+                                            bool_b = False
+                                            for commit in commit_list:
+                                                c = commit.get("commit").get("message")
+                                                if commit:
+                                                    msg = commit.get("commit").get("message")
+                                                    if msg == "Merge \"My First Pull Request\" into main":
+                                                        bool_a = True
+                                                    elif msg == "Update README.md for Question 4":
+                                                        bool_b = True
+
+                                            if bool_a and bool_b:
+                                                # Success
+                                                result = validate(request, "q6", username)
+                                                if result:
+                                                    print("Q6 passed. Congrats, {0}".format(username))
+                                                    return HttpResponseRedirect('/git_workshop/question7/')
+
+        # Fail
+        print("Q6 Failed. Try Again, {0}".format(username))
+        messages.info(request, '검증 실패! 다시 시도해 보세요.')
+        return render(request, 'main/question6.html')
 
 
 def question_seven(request):
