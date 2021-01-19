@@ -264,6 +264,7 @@ def question_six(request):
     *Will Check For...*
     - Latest commit message should be `Merge "My First Pull Request" into main`.
     - Should include commit `Update README.md for Question 4` in main branch with the merged commit.
+    - Main branch should be the default branch.
     """
     userinfo = request.session.get('userinfo')
     if not userinfo:
