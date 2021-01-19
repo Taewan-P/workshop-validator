@@ -1,34 +1,28 @@
+{% load static %}
 <!doctype html>
-<html lang="ko">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<head>
+	<meta charset='UTF-8'>
+	<meta name='viewport' content='width=device-width initial-scale=1'>
+	<title>축하합니다!</title>
+	<link
+		href='https://fonts.loli.net/css?family=PT+Serif:400,400italic,700,700italic&subset=latin,cyrillic-ext,cyrillic,latin-ext'
+		rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/markdown.css' %}">
+</head>
 
-    <title>Welcome to Jaram 2021 Winter Workshop!</title>
-  </head>
-  <body>
-    <div class="container">
-        <h1><strong>🎉🎉 ㅊㅋㅊㅋ~~ 🎉🎉</strong></h1>
-        <p>2021 JARAM 동계 워크샵 GIT 기초과정을 통과하셨습니다!!!</p>
-        <p>해당 화면을 임원진에게 보여주세요~</p>
-        <p>수료한 유저: {{ username }}</p>
-        <p>수료한 시간: {{ timestamp }}</p>
-        <p>-자람 임원진 일동</p>
-    </div>
+<body class='typora-export'>
+	<div id='write' class=''>
+		<h1><a name="🎉🎉-축하합니다-🎉🎉" class="md-header-anchor"></a><span>🎉🎉 축하합니다! 🎉🎉</span></h1>
+		<p><strong><span>2021 Jaram 동계 워크샵 git 기초과정을 수료하셨습니다!!!</span></strong></p>
+		<p><span>해당 화면을 임원진에게 보여주세요~</span></p>
+		<p><span>수료한 유저: {{ username }}</span></p>
+		<p><span>수료한 시간: {{ timestamp }}</span></p>
+		<p>&nbsp;</p>
+		<p><span>해당 화면이 Jaram 2021 동계 워크샵 git 기초과정을 수료했음을 증명함.</span></p>
+		<p><span>-자람 임원진 일동 드림</span></p>
+	</div>
+</body>
 
-    <!-- Optional JavaScript; choose one of the two! -->
-
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
-    -->
-  </body>
 </html>
