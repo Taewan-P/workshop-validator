@@ -133,3 +133,6 @@ dmypy.json
 
 # Secret Key
 .config_secret
+
+# idea files
+.idea/
