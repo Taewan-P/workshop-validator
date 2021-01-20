@@ -235,7 +235,7 @@ def question_five(request):
         return render(request, 'main/question5.html')
     elif request.method == "POST":
         username = userinfo['username']
-        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls".format(username)
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls?state=all".format(username)
         response = requests.get(url)
         status_code = response.status_code
         if status_code == 200:
