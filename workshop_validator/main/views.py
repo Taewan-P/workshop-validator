@@ -51,7 +51,7 @@ def main_page(request):
             values = model_to_dict(mem_lookup)
             request.session['userinfo'] = values
             steps = ""
-            for q in ["q1", "q2", "q3", "q4", "q5", "q6", "q7"]:
+            for q in ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10"]:
                 if not values.get(q):
                     # The question user has to solve
                     print("Going to {0}".format(q))
