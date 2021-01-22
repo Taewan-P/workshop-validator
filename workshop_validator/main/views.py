@@ -66,7 +66,9 @@ def question_one(request):
     """
     First Question.
     Create a public repository named `jaram-workshop-2021`.
-    Verify! - Will only check for public repository named `jaram-workshop-2021` with provided GitHub username.
+
+    *Will Check For...*
+    - public repository named `jaram-workshop-2021` with provided GitHub username.
     """
     userinfo = request.session.get('userinfo')
     if not userinfo:  # Check for forbidden access
@@ -259,7 +261,7 @@ def question_five(request):
 
 def question_six(request):
     """
-    Fifth Question.
+    Sixth Question.
     Create a PR named `My First Pull Request` from feature to main branch
 
     *Will Check For...*
@@ -348,7 +350,7 @@ def question_seven(request):
 
 def question_eight(request):
     """
-    Seventh Question.
+    Eighth Question.
     Merge your Pull Request. However, set merge commit message name to `Merge "My First Pull Request" into main`.
     *Will Check For...*
     - Latest commit message should be `Merge "My First Pull Request" into main`.
