@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+	<meta charset='UTF-8'>
+	<meta name='viewport' content='width=device-width initial-scale=1'>
+	<title>Question 8.</title>
+	<link
+		href='https://fonts.loli.net/css?family=PT+Serif:400,400italic,700,700italic&subset=latin,cyrillic-ext,cyrillic,latin-ext'
+		rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/markdown.css' %}">
+</head>
+
+<body class='typora-export'>
+	<div id='write' class=''>
+		<h1><a name="8번-문제" class="md-header-anchor"></a><span>8번 문제</span></h1>
+		<p><span>아까 6번에서 날린 Pull Request를 merge 한다.</span></p>
+		<p><span>Merge Commit 메시지는 </span><code>Merge &quot;My First Pull Request&quot; into main</code><span>으로!</span></p>
+		<p><span>그리고 Merge Pull Request를 누를때, 옵션은 &quot;Create a merge commit&quot;으로 한다.</span></p>
+		<p><strong><span>조건</span></strong></p>
+		<ul>
+			<li><span>Case Sensitive</span></li>
+			<li><span>Pull Request option must be &quot;Create a merge commit&quot;.</span></li>
+			<li><span>다왔어요!</span></li>
+		</ul>
+		<p>&nbsp;</p>
+		<div style="float: right;">
+            <form action="{% url 'q8' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">제출</button>
+            </form>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                {{ message.message }}
+            {% endfor %}
+        {% endif %}
+	</div>
+</body>
+
+</html>

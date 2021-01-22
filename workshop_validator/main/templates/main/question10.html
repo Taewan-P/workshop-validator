@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset='UTF-8'>
+		<meta name='viewport' content='width=device-width initial-scale=1'>
+		<title>Question 10.</title>
+		<link
+			href='https://fonts.loli.net/css?family=PT+Serif:400,400italic,700,700italic&subset=latin,cyrillic-ext,cyrillic,latin-ext'
+			rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" type="text/css" href="{% static 'css/markdown.css' %}">
+	</head>
+
+<body class='typora-export'>
+	<div id='write' class=''>
+		<h1><a name="10번-문제" class="md-header-anchor"></a><span>10번 문제</span></h1>
+		<p><span>마지막 문제에요.</span></p>
+		<p><span>우리가 지금까지 한 발자취를 찾아볼거에요. </span></p>
+		<p><span>마지막 커밋의 일련번호를 입력해주세요.</span></p>
+		<p><span>화이팅!</span></p>
+		<p><strong><span>조건</span></strong></p>
+		<ul>
+			<li><span>되돌리고 남은 commit 중 제일 최신 커밋의 Commit ID(SHA)를 입력할 것.</span></li>
+		</ul>
+		<p>&nbsp;</p>
+		<div style="float: right;">
+            <form action="{% url 'q10' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="commit_sha">
+                <button type="submit" class="btn btn-primary">제출</button>
+            </form>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                {{ message.message }}
+            {% endfor %}
+        {% endif %}
+	</div>
+</body>
+
+</html>

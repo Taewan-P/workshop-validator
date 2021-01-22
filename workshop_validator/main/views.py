@@ -218,7 +218,7 @@ def question_four(request):
 def question_five(request):
     """
     Fifth Question.
-    Create a PR named `My First Pull Request` from feature to main branch
+    Create a Issue named `Jaram is the best` from feature to main branch
 
     *Will Check For...*
     - Pull Request named string given above exists
@@ -233,6 +233,48 @@ def question_five(request):
 
     if request.method == "GET":
         return render(request, 'main/question5.html')
+    elif request.method == "POST":
+        username = userinfo['username']
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/issues".format(username)
+        response = requests.get(url)
+        status_code = response.status_code
+        if status_code == 200:
+            pr_list = json.loads(response.text)
+            if pr_list:
+                if type(pr_list) is list:
+                    for pr_json in pr_list:
+                        title = pr_json.get("title")
+                        if title == "Jaram is the best":
+                            # Success
+                            result = validate(request, "q5", username)
+                            if result:
+                                print("Q5 passed. Congrats, {0}".format(username))
+                                return HttpResponseRedirect('/git_workshop/question6/')
+
+        # Fail
+        print("Q5 Failed. Try Again, {0}".format(username))
+        messages.info(request, '검증 실패! 다시 시도해 보세요.')
+        return render(request, 'main/question6.html')
+
+
+def question_six(request):
+    """
+    Fifth Question.
+    Create a PR named `My First Pull Request` from feature to main branch
+
+    *Will Check For...*
+    - Pull Request named string given above exists
+    - Making a Pull Request from feature to main branch
+    """
+    userinfo = request.session.get('userinfo')
+    if not userinfo:
+        return HttpResponseRedirect('/forbidden/')
+
+    if not (verify_session(userinfo, "q6") and verify_database(userinfo)):
+        return HttpResponseRedirect('/forbidden/')
+
+    if request.method == "GET":
+        return render(request, 'main/question6.html')
     elif request.method == "POST":
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls".format(username)
@@ -250,20 +292,63 @@ def question_five(request):
                                 username):
                             if title == "My First Pull Request":
                                 # Success
-                                result = validate(request, "q5", username)
+                                result = validate(request, "q6", username)
                                 if result:
-                                    print("Q5 passed. Congrats, {0}".format(username))
-                                    return HttpResponseRedirect('/git_workshop/question6/')
+                                    print("Q6 passed. Congrats, {0}".format(username))
+                                    return HttpResponseRedirect('/git_workshop/question7/')
 
         # Fail
-        print("Q5 Failed. Try Again, {0}".format(username))
+        print("Q6 Failed. Try Again, {0}".format(username))
         messages.info(request, '검증 실패! 다시 시도해 보세요.')
-        return render(request, 'main/question5.html')
+        return render(request, 'main/question6.html')
 
 
-def question_six(request):
+def question_seven(request):
     """
-    Sixth Question.
+    Seventh Question.
+    Tag a PR into comment in issue
+
+    *Will Check For...*
+    - Pull Request named string given above exists
+    - Making a Pull Request from feature to main branch
+    """
+    userinfo = request.session.get('userinfo')
+    if not userinfo:
+        return HttpResponseRedirect('/forbidden/')
+
+    if not (verify_session(userinfo, "q7") and verify_database(userinfo)):
+        return HttpResponseRedirect('/forbidden/')
+
+    if request.method == "GET":
+        return render(request, 'main/question7.html')
+    elif request.method == "POST":
+        username = userinfo['username']
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls?state=closed".format(username)
+        response = requests.get(url)
+        status_code = response.status_code
+        if status_code == 200:
+            pr_list = json.loads(response.text)
+            if pr_list:
+                if type(pr_list) is list:
+                    for pr_json in pr_list:
+                        assignees = pr_json.get("assignees")
+                        labels = pr_json.get("labels")
+                        if any([x["login"] == username] for x in assignees) and \
+                                any([x["name"] == "good first issue"] for x in labels):
+                            result = validate(request, "q7", username)
+                            if result:
+                                print("Q7 passed. Congrats, {0}".format(username))
+                                return HttpResponseRedirect('/git_workshop/question8/')
+
+        # Fail
+        print("Q7 Failed. Try Again, {0}".format(username))
+        messages.info(request, '검증 실패! 다시 시도해 보세요.')
+        return render(request, 'main/question7.html')
+
+
+def question_eight(request):
+    """
+    Seventh Question.
     Merge your Pull Request. However, set merge commit message name to `Merge "My First Pull Request" into main`.
     *Will Check For...*
     - Latest commit message should be `Merge "My First Pull Request" into main`.
@@ -274,11 +359,11 @@ def question_six(request):
     if not userinfo:
         return HttpResponseRedirect('/forbidden/')
 
-    if not (verify_session(userinfo, "q6") and verify_database(userinfo)):
+    if not (verify_session(userinfo, "q8") and verify_database(userinfo)):
         return HttpResponseRedirect('/forbidden/')
 
     if request.method == "GET":
-        return render(request, 'main/question6.html')
+        return render(request, 'main/question8.html')
     elif request.method == "POST":
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls?state=closed".format(username)
@@ -313,20 +398,20 @@ def question_six(request):
 
                                             if bool_a and bool_b:
                                                 # Success
-                                                result = validate(request, "q6", username)
+                                                result = validate(request, "q8", username)
                                                 if result:
-                                                    print("Q6 passed. Congrats, {0}".format(username))
-                                                    return HttpResponseRedirect('/git_workshop/question7/')
+                                                    print("Q8 passed. Congrats, {0}".format(username))
+                                                    return HttpResponseRedirect('/git_workshop/question9/')
 
         # Fail
-        print("Q6 Failed. Try Again, {0}".format(username))
+        print("Q8 Failed. Try Again, {0}".format(username))
         messages.info(request, '검증 실패! 다시 시도해 보세요.')
-        return render(request, 'main/question6.html')
+        return render(request, 'main/question8.html')
 
 
-def question_seven(request):
+def question_nine(request):
     """
-    Seventh Question.
+    Ninth Question.
     Do a hard reset to your repository. Revert all commits after the Pull Request you've made.
 
     *Will Check For...*
@@ -336,11 +421,11 @@ def question_seven(request):
     if not userinfo:
         return HttpResponseRedirect('/forbidden/')
 
-    if not (verify_session(userinfo, "q7") and verify_database(userinfo)):
+    if not (verify_session(userinfo, "q9") and verify_database(userinfo)):
         return HttpResponseRedirect('/forbidden/')
 
     if request.method == "GET":
-        return render(request, 'main/question7.html')
+        return render(request, 'main/question9.html')
     elif request.method == "POST":
         # Verification
         username = userinfo['username']
@@ -357,15 +442,58 @@ def question_seven(request):
                     # global sha
                     # if sha == sha_after:
                     # Success
-                    result = validate(request, "q7", username)
+                    result = validate(request, "q9", username)
                     if result:
-                        print("Q7 passed. Congrats, {0}".format(username))
+                        print("Q9 passed. Congrats, {0}".format(username))
+                        return HttpResponseRedirect('/git_workshop/question10/')
+
+        # Fail
+        print("Q9 Failed. Try Again, {0}".format(username))
+        messages.info(request, '검증 실패! 다시 시도해 보세요.')
+        return render(request, 'main/question9.html')
+
+
+def question_ten(request):
+    """
+    Last Question.
+    Get git repo's log to check what we did.
+    """
+    userinfo = request.session.get('userinfo')
+    if not userinfo:
+        return HttpResponseRedirect('/forbidden/')
+
+    if not (verify_session(userinfo, "q10") and verify_database(userinfo)):
+        return HttpResponseRedirect('/forbidden/')
+
+    if request.method == "GET":
+        return render(request, 'main/question10.html')
+    elif request.method == "POST":
+        # Answer
+        commit_sha = request.POST["commit_sha"]
+        # Verification
+        username = userinfo['username']
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/branches/main".format(username)
+        response = requests.get(url)
+        status_code = response.status_code
+        response_text = json.loads(response.text)
+        if status_code == 200:
+            commit = response_text.get("commit")
+            if commit:
+                msg = commit.get("sha")
+                # sha_after = commit.get("sha")
+                if commit_sha == msg:
+                    # global sha
+                    # if sha == sha_after:
+                    # Success
+                    result = validate(request, "q10", username)
+                    if result:
+                        print("Q10 passed. Congrats, {0}".format(username))
                         return HttpResponseRedirect('/git_workshop/finished/')
 
         # Fail
-        print("Q7 Failed. Try Again, {0}".format(username))
+        print("Q10 Failed. Try Again, {0}".format(username))
         messages.info(request, '검증 실패! 다시 시도해 보세요.')
-        return render(request, 'main/question7.html')
+        return render(request, 'main/question10.html')
 
 
 def validate(request, question, username) -> bool:
@@ -389,6 +517,12 @@ def validate(request, question, username) -> bool:
         user.q6 = True
     elif question == "q7":
         user.q7 = True
+    elif question == "q8":
+        user.q8 = True
+    elif question == "q9":
+        user.q9 = True
+    elif question == "q10":
+        user.q10 = True
 
     user.save()
     userinfo[question] = True
@@ -398,7 +532,7 @@ def validate(request, question, username) -> bool:
 
 
 def verify_session(userinfo, question) -> bool:
-    for q in ["q1", "q2", "q3", "q4", "q5", "q6", "q7"]:
+    for q in ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10"]:
         if q == question:
             return True
 
@@ -422,7 +556,7 @@ def finished(request):
     if not verify_database(userinfo):
         return HttpResponseRedirect('/forbidden/')
 
-    for q in ["q1", "q2", "q3", "q4", "q5", "q6", "q7"]:
+    for q in ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10"]:
         if not userinfo[q]:
             # Fake Session
             return HttpResponseRedirect('/forbidden/')
