@@ -5,10 +5,13 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.forms.models import model_to_dict
 from django.contrib import messages
 from django.utils import timezone
+from workshop_validator.util import get_server_info_value
 
 from .models import Member
 
 sha = ""
+api_key = get_server_info_value("api_key")
+headers = {'Authorization': 'token {0}'.format(api_key)}
 
 
 # Create your views here.
@@ -80,7 +83,7 @@ def question_one(request):
         # Verification
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021".format(username)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         print(response.status_code)
         if response.status_code == 200:
             # Validate that this user have solved the question
@@ -118,7 +121,7 @@ def question_two(request):
         # Verification
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/branches/main".format(username)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         status_code = response.status_code
         response_text = json.loads(response.text)
         if status_code == 200:
@@ -161,7 +164,7 @@ def question_three(request):
         # Verification
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/branches/feature".format(username)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         status_code = response.status_code
         if status_code == 200:
             # Success
@@ -197,7 +200,7 @@ def question_four(request):
         # Verification
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/branches/feature".format(username)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         status_code = response.status_code
         response_text = json.loads(response.text)
         if status_code == 200:
@@ -238,7 +241,7 @@ def question_five(request):
     elif request.method == "POST":
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/issues".format(username)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         status_code = response.status_code
         if status_code == 200:
             pr_list = json.loads(response.text)
@@ -280,7 +283,7 @@ def question_six(request):
     elif request.method == "POST":
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls".format(username)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         status_code = response.status_code
         if status_code == 200:
             pr_list = json.loads(response.text)
@@ -326,7 +329,7 @@ def question_seven(request):
     elif request.method == "POST":
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls?state=closed".format(username)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         status_code = response.status_code
         if status_code == 200:
             pr_list = json.loads(response.text)
@@ -369,7 +372,7 @@ def question_eight(request):
     elif request.method == "POST":
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls?state=closed".format(username)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         status_code = response.status_code
         if status_code == 200:
             pr_list = json.loads(response.text)
@@ -381,7 +384,7 @@ def question_eight(request):
                             merged = pr_json.get("merged_at") is not None
                             if merged:
                                 url = "https://api.github.com/repos/{0}/jaram-workshop-2021/commits".format(username)
-                                response = requests.get(url)
+                                response = requests.get(url, headers=headers)
                                 status_code = response.status_code
                                 if status_code == 200:
                                     commit_list = json.loads(response.text)
@@ -432,7 +435,7 @@ def question_nine(request):
         # Verification
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/branches/main".format(username)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         status_code = response.status_code
         response_text = json.loads(response.text)
         if status_code == 200:
@@ -475,7 +478,7 @@ def question_ten(request):
         # Verification
         username = userinfo['username']
         url = "https://api.github.com/repos/{0}/jaram-workshop-2021/branches/main".format(username)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         status_code = response.status_code
         response_text = json.loads(response.text)
         if status_code == 200:
