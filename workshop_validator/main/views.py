@@ -259,7 +259,7 @@ def question_five(request):
         # Fail
         print("Q5 Failed. Try Again, {0}".format(username))
         messages.info(request, '검증 실패! 다시 시도해 보세요.')
-        return render(request, 'main/question6.html')
+        return render(request, 'main/question5.html')
 
 
 def question_six(request):
