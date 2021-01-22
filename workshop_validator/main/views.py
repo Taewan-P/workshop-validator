@@ -456,8 +456,7 @@ def question_nine(request):
 def question_ten(request):
     """
     Last Question.
-    Do a hard reset to your repository. Revert all commits after the Pull Request you've made.
-
+    Get git repo's log to check what we did.
     """
     userinfo = request.session.get('userinfo')
     if not userinfo:
