@@ -328,7 +328,7 @@ def question_seven(request):
         return render(request, 'main/question7.html')
     elif request.method == "POST":
         username = userinfo['username']
-        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls?state=closed".format(username)
+        url = "https://api.github.com/repos/{0}/jaram-workshop-2021/pulls?state=open".format(username)
         response = requests.get(url, headers=headers)
         status_code = response.status_code
         if status_code == 200:
